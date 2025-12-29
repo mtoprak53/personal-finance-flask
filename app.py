@@ -69,7 +69,7 @@ def add_account():
     try:
         name = request.form.get('name')
         balance = Decimal(request.form.get('balance', 0))
-        currency = request.form.get('currency', 'TRY')
+        currency = request.form.get('currency', 'USD')
         
         if not name:
             flash('Hesap adı gerekli!', 'danger')
@@ -253,4 +253,4 @@ def chart_data():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

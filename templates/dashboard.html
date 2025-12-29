@@ -5,249 +5,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finans Takip Paneli</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --success: #4cc9f0;
-            --danger: #f72585;
-            --warning: #f8961e;
-            --dark: #2b2d42;
-            --light: #f8f9fa;
-        }
-
-        body {
-            background-color: #f5f7fb;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 250px;
-            background: linear-gradient(180deg, var(--primary) 0%, #3a56d4 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
-
-        .card-header {
-            background: white;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            font-weight: 600;
-        }
-
-        .stat-card {
-            border-left: 4px solid;
-            padding: 20px;
-        }
-
-        .income-card {
-            border-left-color: var(--success);
-        }
-
-        .expense-card {
-            border-left-color: var(--danger);
-        }
-
-        .balance-card {
-            border-left-color: var(--primary);
-        }
-
-        .account-card {
-            border-top: 3px solid var(--primary);
-        }
-
-        .transaction-income {
-            border-left: 4px solid var(--success);
-            background: linear-gradient(90deg, rgba(76, 201, 240, 0.05) 0%, transparent 100%);
-        }
-
-        .transaction-expense {
-            border-left: 4px solid var(--danger);
-            background: linear-gradient(90deg, rgba(247, 37, 133, 0.05) 0%, transparent 100%);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 500;
-        }
-
-        .btn-primary:hover {
-            background: #3a56d4;
-            transform: translateY(-2px);
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 12px 25px;
-            margin: 5px 15px;
-            border-radius: 10px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-        }
-
-        .nav-link i {
-            font-size: 1.2rem;
-            width: 24px;
-        }
-
-        .badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-        }
-
-        .form-control,
-        .form-select {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 12px;
-            transition: all 0.3s;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-
-        .table {
-            --bs-table-striped-bg: rgba(0, 0, 0, 0.02);
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: rgba(67, 97, 238, 0.05);
-        }
-
-        .chart-container {
-            height: 300px;
-            position: relative;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-                padding: 20px 5px;
-            }
-
-            .sidebar .nav-text {
-                display: none;
-            }
-
-            .main-content {
-                margin-left: 70px;
-            }
-
-            .nav-link {
-                justify-content: center;
-                padding: 15px 5px;
-                margin: 5px;
-            }
-
-            .nav-link i {
-                font-size: 1.5rem;
-                margin: 0;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fadeIn {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(67, 97, 238, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0); }
-        }
-    </style>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon (isteğe bağlı) -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 
 <body>
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="text-center mb-4">
-            <div class="pulse" style="display: inline-block; padding: 10px; border-radius: 50%; background: rgba(255,255,255,0.1);">
-                <i class="fas fa-chart-line fa-2x"></i>
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <i class="fas fa-chart-line"></i>
             </div>
-            <h4 class="mt-3 d-none d-md-block">Finans Takip</h4>
-            <p class="text-white-50 small d-none d-md-block">Kişisel Bütçe Yönetimi</p>
+            <h4 class="brand-title">Finans Takip</h4>
+            <p class="brand-subtitle">Kişisel Bütçe Yönetimi</p>
         </div>
 
-        <nav class="nav flex-column">
-            <a href="#" class="nav-link active">
-                <i class="fas fa-home"></i>
-                <span class="nav-text">Dashboard</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-wallet"></i>
-                <span class="nav-text">Hesaplar</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-exchange-alt"></i>
-                <span class="nav-text">İşlemler</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-chart-pie"></i>
-                <span class="nav-text">Raporlar</span>
-            </a>
-            <a href="#" class="nav-link">
-                <i class="fas fa-cog"></i>
-                <span class="nav-text">Ayarlar</span>
-            </a>
+        <nav class="sidebar-nav">
+            <div class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-wallet nav-icon"></i>
+                    <span class="nav-text">Hesaplar</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-exchange-alt nav-icon"></i>
+                    <span class="nav-text">İşlemler</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-pie nav-icon"></i>
+                    <span class="nav-text">Raporlar</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog nav-icon"></i>
+                    <span class="nav-text">Ayarlar</span>
+                </a>
+            </div>
         </nav>
 
-        <div class="mt-auto px-3">
-            <div class="card bg-dark text-white">
-                <div class="card-body p-3">
-                    <small>Toplam Net Değer</small>
-                    <h4 class="mb-0">{{ total_balance | default(0) }} ₺</h4>
-                </div>
+        <div class="sidebar-footer">
+            <div class="total-balance-card">
+                <div class="total-balance-label">Toplam Net Değer</div>
+                <div class="total-balance-amount">$ {{ total_balance | default(0) }}</div>
             </div>
         </div>
     </div>
@@ -255,12 +77,12 @@
     <!-- MAIN CONTENT -->
     <div class="main-content animate-fadeIn">
         <!-- HEADER -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="page-header d-flex justify-content-between align-items-center">
             <div>
-                <h1 class="h3 mb-1">Dashboard</h1>
-                <p class="text-muted mb-0">Hoş geldiniz! Finansal durumunuzu takip edin.</p>
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">Hoş geldiniz! Finansal durumunuzu takip edin.</p>
             </div>
-            <div class="d-flex gap-2">
+            <div class="header-actions">
                 <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addTransactionModal">
                     <i class="fas fa-plus me-2"></i>Yeni İşlem
                 </button>
@@ -271,124 +93,113 @@
         </div>
 
         <!-- STATISTICS CARDS -->
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card stat-card balance-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p class="text-muted mb-1">Toplam Bakiye</p>
-                                <h3 class="mb-0">{{ total_balance | default(0) }} ₺</h3>
-                            </div>
-                            <div class="bg-primary rounded-circle p-3">
-                                <i class="fas fa-coins text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 12%</span>
-                            <span class="text-muted">geçen aya göre</span>
-                        </div>
+        <div class="stats-grid">
+            <div class="stat-card balance-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-label">Toplam Bakiye</div>
+                        <div class="stat-value">$ {{ total_balance | default(0) }}</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card stat-card income-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p class="text-muted mb-1">Bu Ay Gelir</p>
-                                <h3 class="mb-0">{{ monthly_income | default(0) }} ₺</h3>
-                            </div>
-                            <div class="bg-success rounded-circle p-3">
-                                <i class="fas fa-arrow-down text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 8 işlem</span>
-                        </div>
-                    </div>
+                <div class="stat-trend">
+                    <span class="trend-up"><i class="fas fa-arrow-up me-1"></i> 12%</span>
+                    <span class="text-muted">geçen aya göre</span>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card stat-card expense-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <p class="text-muted mb-1">Bu Ay Gider</p>
-                                <h3 class="mb-0">{{ monthly_expense | default(0) }} ₺</h3>
-                            </div>
-                            <div class="bg-danger rounded-circle p-3">
-                                <i class="fas fa-arrow-up text-white"></i>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <span class="text-danger"><i class="fas fa-arrow-up me-1"></i> 15 işlem</span>
-                        </div>
+
+            <div class="stat-card income-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-label">Bu Ay Gelir</div>
+                        <div class="stat-value">$ {{ monthly_income | default(0) }}</div>
                     </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                </div>
+                <div class="stat-trend">
+                    <span class="trend-up"><i class="fas fa-arrow-up me-1"></i> 8 işlem</span>
+                </div>
+            </div>
+
+            <div class="stat-card expense-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-label">Bu Ay Gider</div>
+                        <div class="stat-value">$ {{ monthly_expense | default(0) }}</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <div class="stat-trend">
+                    <span class="trend-down"><i class="fas fa-arrow-up me-1"></i> 15 işlem</span>
                 </div>
             </div>
         </div>
 
-        <!-- ACCOUNTS & RECENT TRANSACTIONS -->
+        <!-- CONTENT GRID -->
         <div class="row">
             <!-- ACCOUNTS SECTION -->
             <div class="col-lg-5 mb-4">
-                <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Hesaplarım</h5>
-                        <span class="badge bg-primary">{{ accounts|length }} hesap</span>
+                <div class="accounts-section h-100">
+                    <div class="section-header">
+                        <h5 class="section-title">Hesaplarım</h5>
+                        <span class="section-badge">{{ accounts|length }} hesap</span>
                     </div>
-                    <div class="card-body">
+                    <div class="section-body">
                         {% if accounts %}
-                        {% for acc in accounts %}
-                        <div class="card account-card mb-3">
-                            <div class="card-body">
+                            {% for acc in accounts %}
+                            <div class="account-card">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="bg-light rounded-circle p-2">
-                                                <i class="fas fa-wallet text-primary"></i>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">{{ acc.name }}</h6>
-                                                <small class="text-muted">{{ acc.currency }}</small>
-                                            </div>
+                                    <div class="account-header">
+                                        <div class="account-icon">
+                                            <i class="fas fa-wallet"></i>
+                                        </div>
+                                        <div class="account-info">
+                                            <h6>{{ acc.name }}</h6>
+                                            <div class="account-currency">{{ acc.currency }}</div>
                                         </div>
                                     </div>
-                                    <div class="text-end">
-                                        <h5 class="mb-0">{{ acc.balance }} ₺</h5>
+                                    <div class="account-balance">
+                                        <div class="account-balance-amount">{% if acc.currency == 'USD' %}$ {{ acc.balance }}{% elif acc.currency == 'TRY' %}{{ acc.balance }} ₺{% else %}€ {{ acc.balance }}{% endif %}</div>
                                         <form action="{{ url_for('delete_account', id=acc.id) }}" method="POST"
                                             onsubmit="return confirm('Hesabı silmek istediğinize emin misiniz?');"
                                             class="d-inline">
-                                            <button type="submit" class="btn btn-link text-danger p-0">
+                                            <button type="submit" class="account-delete-btn">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                            {% endfor %}
                         {% else %}
-                        <div class="text-center py-5">
-                            <i class="fas fa-wallet fa-3x text-muted mb-3"></i>
-                            <p class="text-muted">Henüz hesap eklenmemiş</p>
-                        </div>
+                            <div class="no-data">
+                                <div class="no-data-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <p>Henüz hesap eklenmemiş</p>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
 
-            <!-- RECENT TRANSACTIONS -->
+            <!-- TRANSACTIONS SECTION -->
             <div class="col-lg-7">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Son İşlemler</h5>
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h5 class="section-title">Son İşlemler</h5>
                         <a href="#" class="btn btn-sm btn-outline-primary">Tümünü Gör</a>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="section-body">
+                        {% if transactions %}
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="transaction-table">
                                 <thead>
                                     <tr>
                                         <th>Tarih</th>
@@ -399,28 +210,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% if transactions %}
                                     {% for t in transactions %}
-                                    <tr class="{{ 'transaction-income' if t.type == 'income' else 'transaction-expense' }}">
-                                        <td>
-                                            <small>{{ t.date.strftime('%d %b') }}</small>
-                                            <br>
-                                            <small class="text-muted">{{ t.date.strftime('%H:%M') }}</small>
+                                    <tr class="animate-slideIn">
+                                        <td data-label="Tarih">
+                                            <span class="date-day">{{ t.date.strftime('%d %b') }}</span>
+                                            <span class="date-time">{{ t.date.strftime('%H:%M') }}</span>
                                         </td>
-                                        <td>
-                                            <strong>{{ t.title }}</strong>
-                                            <br>
-                                            <small class="text-muted">{{ t.account.name }}</small>
+                                        <td data-label="Açıklama">
+                                            <span class="transaction-title">{{ t.title }}</span>
+                                            <span class="transaction-account">{{ t.account.name }}</span>
                                         </td>
-                                        <td>
-                                            <span class="badge bg-light text-dark">{{ t.category }}</span>
+                                        <td data-label="Kategori">
+                                            <span class="category-badge">{{ t.category }}</span>
                                         </td>
-                                        <td>
-                                            <strong class="{{ 'text-success' if t.type == 'income' else 'text-danger' }}">
-                                                {{ '+' if t.type == 'income' else '-' }}{{ t.amount }} ₺
-                                            </strong>
+                                        <td data-label="Miktar" class="{{ 'amount-income' if t.type == 'income' else 'amount-expense' }}">
+                                            {{ '+' if t.type == 'income' else '-' }}{% if t.account.currency == 'USD' %}$ {{ t.amount }}{% elif t.account.currency == 'TRY' %}{{ t.amount }} ₺{% else %}€ {{ t.amount }}{% endif %}
                                         </td>
-                                        <td>
+                                        <td data-label="İşlem" class="transaction-actions">
                                             <form action="{{ url_for('delete_transaction', id=t.id) }}" method="POST"
                                                 onsubmit="return confirm('İşlemi silmek istediğinize emin misiniz?');">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -430,51 +236,42 @@
                                         </td>
                                     </tr>
                                     {% endfor %}
-                                    {% else %}
-                                    <tr>
-                                        <td colspan="5" class="text-center py-4">
-                                            <i class="fas fa-receipt fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted">Henüz işlem yok</p>
-                                        </td>
-                                    </tr>
-                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>
+                        {% else %}
+                        <div class="no-data">
+                            <div class="no-data-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <p>Henüz işlem yok</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <!-- QUICK STATS -->
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <p class="text-muted mb-1">En Çok Harcama</p>
-                                        <h6 class="mb-0">{{ top_category | default('Yok') }}</h6>
-                                    </div>
-                                    <div class="bg-warning rounded-circle p-3">
-                                        <i class="fas fa-chart-bar text-white"></i>
-                                    </div>
-                                </div>
+                <div class="quick-stats">
+                    <div class="quick-stat-card quick-stat-positive">
+                        <div class="quick-stat-header">
+                            <div>
+                                <div class="quick-stat-label">En Çok Harcama</div>
+                                <div class="quick-stat-value">{{ top_category | default('Yok') }}</div>
+                            </div>
+                            <div class="quick-stat-icon">
+                                <i class="fas fa-chart-bar"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <p class="text-muted mb-1">Aylık Net</p>
-                                        <h6 class="mb-0 {{ 'text-success' if net_positive else 'text-danger' }}">
-                                            {{ monthly_net | default(0) }} ₺
-                                        </h6>
-                                    </div>
-                                    <div class="bg-info rounded-circle p-3">
-                                        <i class="fas fa-calculator text-white"></i>
-                                    </div>
-                                </div>
+                    
+                    <div class="quick-stat-card {% if net_positive %}quick-stat-positive{% else %}quick-stat-negative{% endif %}">
+                        <div class="quick-stat-header">
+                            <div>
+                                <div class="quick-stat-label">Aylık Net</div>
+                                <div class="quick-stat-value">$ {{ monthly_net | default(0) }}</div>
+                            </div>
+                            <div class="quick-stat-icon">
+                                <i class="fas fa-calculator"></i>
                             </div>
                         </div>
                     </div>
@@ -504,9 +301,9 @@
                         <div class="mb-3">
                             <label class="form-label">Para Birimi</label>
                             <select name="currency" class="form-select">
-                                <option value="TRY" selected>TRY - Türk Lirası</option>
-                                <option value="USD">USD - Amerikan Doları</option>
-                                <option value="EUR">EUR - Euro</option>
+                              <option value="USD" selected>USD - Amerikan Doları</option>
+                              <option value="TRY">TRY - Türk Lirası</option>
+                              <option value="EUR">EUR - Euro</option>
                             </select>
                         </div>
                     </div>
@@ -587,7 +384,12 @@
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript (isteğe bağlı) -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
     <script>
         // Dinamik form güncelleme
         document.getElementById('transactionType').addEventListener('change', function() {
@@ -604,12 +406,11 @@
             });
         }, 5000);
 
-        // Initialize tooltips
+        // Tooltip'leri başlat
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     </script>
 </body>
-
 </html>

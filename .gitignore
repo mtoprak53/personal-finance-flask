@@ -18,10 +18,24 @@ env/
 # Environment
 .env
 .env.local
+.env.production
+.env.*.local
+
+# Environment files
+environments/.env
+environments/.env.local
+environments/.env.production
+environments/.env.*.local
+
+# Sadece template ve development tut
+!environments/.env.example
+!environments/.env.development
+!environments/.env.testing
 
 # Database
 *.db
 instance/
+*.sqlite3
 
 # OS
 .DS_Store
@@ -31,5 +45,14 @@ Thumbs.db
 *.log
 logs/
 
+# Coverage
+.coverage
+htmlcov/
+
+# PyCharm
+.idea/
+
 # Custom
 no_git/
+.flaskenv
+.backup

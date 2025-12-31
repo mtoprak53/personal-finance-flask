@@ -904,3 +904,20 @@ body {
         color: #e2e8f0;
     }
 }
+
+/* FLASH MESSAGES */
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 400px;
+}
+
+.alert {
+    box-shadow: var(--shadow);
+    border: none;
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    animation: fadeIn 0.3s ease-out;
+}

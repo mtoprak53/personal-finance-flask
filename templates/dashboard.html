@@ -1,317 +1,224 @@
-
 {% extends "base.html" %}
 
 {% block content %}
-  <!-- MAIN CONTENT -->
+<!-- MAIN CONTENT -->
 
-    <!-- HEADER -->
-    {% include 'components/header.html' %}
+<!-- HEADER -->
+{% include 'components/header.html' %}
 
-    <!-- STATISTICS CARDS -->
-    <div class="stats-grid">
-      <div class="stat-card balance-card">
-        <div class="stat-header">
-          <div>
-            <div class="stat-label">Toplam Bakiye</div>
-            <div class="stat-value">$ {{ total_balance | default(0) }}</div>
-          </div>
-          <div class="stat-icon">
-            <i class="fas fa-coins"></i>
-          </div>
-        </div>
-        <div class="stat-trend">
-          <span class="trend-up"><i class="fas fa-arrow-up me-1"></i> 12%</span>
-          <span class="text-muted">geçen aya göre</span>
-        </div>
+<!-- STATISTICS CARDS -->
+<div class="stats-grid">
+  <div class="stat-card balance-card">
+    <div class="stat-header">
+      <div>
+        <div class="stat-label">Toplam Bakiye</div>
+        <div class="stat-value">${{ total_balance | default(0) }}</div>
       </div>
-
-      <div class="stat-card income-card">
-        <div class="stat-header">
-          <div>
-            <div class="stat-label">Bu Ay Gelir</div>
-            <div class="stat-value">$ {{ monthly_income | default(0) }}</div>
-          </div>
-          <div class="stat-icon">
-            <i class="fas fa-arrow-down"></i>
-          </div>
-        </div>
-        <div class="stat-trend">
-          <span class="trend-up"><i class="fas fa-arrow-up me-1"></i> 8 işlem</span>
-        </div>
-      </div>
-
-      <div class="stat-card expense-card">
-        <div class="stat-header">
-          <div>
-            <div class="stat-label">Bu Ay Gider</div>
-            <div class="stat-value">$ {{ monthly_expense | default(0) }}</div>
-          </div>
-          <div class="stat-icon">
-            <i class="fas fa-arrow-up"></i>
-          </div>
-        </div>
-        <div class="stat-trend">
-          <span class="trend-down"><i class="fas fa-arrow-up me-1"></i> 15 işlem</span>
-        </div>
+      <div class="stat-icon">
+        <i class="fas fa-coins"></i>
       </div>
     </div>
+    <div class="stat-trend">
+      <span class="trend-up"><i class="fas fa-arrow-up me-1"></i> 12%</span>
+      <span class="text-muted">geçen aya göre</span>
+    </div>
+  </div>
 
-    <!-- CONTENT GRID -->
-    <div class="row">
-      <!-- ACCOUNTS SECTION -->
-      <div class="col-lg-5 mb-4">
-        <div class="accounts-section h-100">
-          <div class="section-header">
-            <h5 class="section-title">Hesaplarım</h5>
-            <span class="section-badge">{{ accounts|length }} hesap</span>
-          </div>
-          <div class="section-body">
-            {% if accounts %}
-            {% for acc in accounts %}
-            <div class="account-card">
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="account-header">
-                  <div class="account-icon">
-                    <i class="fas fa-wallet"></i>
-                  </div>
-                  <div class="account-info">
-                    <h6>{{ acc.name }}</h6>
-                    <div class="account-currency">{{ acc.currency }}</div>
-                  </div>
-                </div>
-                <div class="account-balance">
-                  <div class="account-balance-amount">{% if acc.currency == 'USD' %}$ {{ acc.balance }}{% elif
-                    acc.currency == 'TRY' %}{{ acc.balance }} ₺{% else %}€ {{ acc.balance }}{% endif %}</div>
-                  <form action="{{ url_for('delete_account', id=acc.id) }}" method="POST"
-                    onsubmit="return confirm('Hesabı silmek istediğinize emin misiniz?');" class="d-inline">
-                    <button type="submit" class="account-delete-btn">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-            {% else %}
-            <div class="no-data">
-              <div class="no-data-icon">
+  <div class="stat-card income-card">
+    <div class="stat-header">
+      <div>
+        <div class="stat-label">Bu Ay Gelir</div>
+        <div class="stat-value">${{ monthly_income | default(0) }}</div>
+      </div>
+      <div class="stat-icon">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
+    <div class="stat-trend">
+      <span class="trend-up"><i class="fas fa-arrow-up me-1"></i> 8 işlem</span>
+    </div>
+  </div>
+
+  <div class="stat-card expense-card">
+    <div class="stat-header">
+      <div>
+        <div class="stat-label">Bu Ay Gider</div>
+        <div class="stat-value">${{ monthly_expense | default(0) }}</div>
+      </div>
+      <div class="stat-icon">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+    </div>
+    <div class="stat-trend">
+      <span class="trend-down"><i class="fas fa-arrow-up me-1"></i> 15 işlem</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT GRID -->
+<div class="row">
+
+  <!-- ACCOUNTS SECTION -->
+  <div class="col-lg-5 mb-4">
+    <div class="accounts-section h-100">
+      <div class="section-header">
+        <h5 class="section-title">Hesaplarım</h5>
+        <span class="section-badge">{{ accounts|length }} hesap</span>
+      </div>
+      <div class="section-body">
+        {% if accounts %}
+        {% for acc in accounts %}
+        <div class="account-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="account-header">
+              <div class="account-icon">
                 <i class="fas fa-wallet"></i>
               </div>
-              <p>Henüz hesap eklenmemiş</p>
-            </div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      <!-- TRANSACTIONS SECTION -->
-      <div class="col-lg-7">
-        <div class="transactions-section">
-          <div class="section-header">
-            <h5 class="section-title">Son İşlemler</h5>
-            <a href="#" class="btn btn-sm btn-outline-primary">Tümünü Gör</a>
-          </div>
-          <div class="section-body">
-            {% if transactions %}
-            <div class="table-responsive">
-              <table class="transaction-table">
-                <thead>
-                  <tr>
-                    <th>Tarih</th>
-                    <th>Açıklama</th>
-                    <th>Kategori</th>
-                    <th>Miktar</th>
-                    <th>İşlem</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for t in transactions %}
-                  <tr class="animate-slideIn">
-                    <td data-label="Tarih">
-                      <span class="date-day">{{ t.date.strftime('%d %b') }}</span>
-                      <span class="date-time">{{ t.date.strftime('%H:%M') }}</span>
-                    </td>
-                    <td data-label="Açıklama">
-                      <span class="transaction-title">{{ t.title }}</span>
-                      <span class="transaction-account">{{ t.account.name }}</span>
-                    </td>
-                    <td data-label="Kategori">
-                      <span class="category-badge">{{ t.category }}</span>
-                    </td>
-                    <td data-label="Miktar" class="{{ 'amount-income' if t.type == 'income' else 'amount-expense' }}">
-                      {{ '+' if t.type == 'income' else '-' }}{% if t.account.currency == 'USD' %}$ {{ t.amount }}{%
-                      elif t.account.currency == 'TRY' %}{{ t.amount }} ₺{% else %}€ {{ t.amount }}{% endif %}
-                    </td>
-                    <td data-label="İşlem" class="transaction-actions">
-                      <form action="{{ url_for('delete_transaction', id=t.id) }}" method="POST"
-                        onsubmit="return confirm('İşlemi silmek istediğinize emin misiniz?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-            {% else %}
-            <div class="no-data">
-              <div class="no-data-icon">
-                <i class="fas fa-receipt"></i>
-              </div>
-              <p>Henüz işlem yok</p>
-            </div>
-            {% endif %}
-          </div>
-        </div>
-
-        <!-- QUICK STATS -->
-        <div class="quick-stats">
-          <div class="quick-stat-card quick-stat-positive">
-            <div class="quick-stat-header">
-              <div>
-                <div class="quick-stat-label">En Çok Harcama</div>
-                <div class="quick-stat-value">{{ top_category | default('Yok') }}</div>
-              </div>
-              <div class="quick-stat-icon">
-                <i class="fas fa-chart-bar"></i>
+              <div class="account-info">
+                <h6>{{ acc.name }}</h6>
+                <div class="account-currency">{{ acc.currency }}</div>
               </div>
             </div>
-          </div>
-
-          <div class="quick-stat-card {% if net_positive %}quick-stat-positive{% else %}quick-stat-negative{% endif %}">
-            <div class="quick-stat-header">
-              <div>
-                <div class="quick-stat-label">Aylık Net</div>
-                <div class="quick-stat-value">$ {{ monthly_net | default(0) }}</div>
-              </div>
-              <div class="quick-stat-icon">
-                <i class="fas fa-calculator"></i>
-              </div>
+            <div class="account-balance">
+              <div class="account-balance-amount">{% if acc.currency == 'USD' %}${{ acc.balance }}{% elif
+                acc.currency == 'TRY' %}{{ acc.balance }} ₺{% else %}€ {{ acc.balance }}{% endif %}</div>
+              <form action="{{ url_for('main.delete_account', id=acc.id) }}" method="POST"
+                onsubmit="return confirm('Hesabı silmek istediğinize emin misiniz?');" class="d-inline">
+                <button type="submit" class="account-delete-btn">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-  <!-- MODAL: ADD ACCOUNT -->
-  <div class="modal fade" id="addAccountModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Yeni Hesap Ekle</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        {% endfor %}
+        {% else %}
+        <div class="no-data">main
+          <div class="no-data-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <p>Henüz hesap eklenmemiş</p>
         </div>
-        <form action="/add_account" method="POST">
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Hesap Adı</label>
-              <input type="text" name="name" class="form-control" placeholder="Örn: Akbank Vadeli" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Başlangıç Bakiyesi</label>
-              <input type="number" step="0.01" name="balance" class="form-control" placeholder="0.00" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Para Birimi</label>
-              <select name="currency" class="form-select">
-                <option value="USD" selected>USD - Amerikan Doları</option>
-                <option value="TRY">TRY - Türk Lirası</option>
-                <option value="EUR">EUR - Euro</option>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-            <button type="submit" class="btn btn-primary">Hesap Oluştur</button>
-          </div>
-        </form>
+        {% endif %}
       </div>
     </div>
   </div>
 
-  <!-- MODAL: ADD TRANSACTION -->
-  <div class="modal fade" id="addTransactionModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Yeni İşlem Ekle</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <!-- TRANSACTIONS SECTION -->
+  <div class="col-lg-7">
+    <div class="transactions-section">
+      <div class="section-header">
+        <h5 class="section-title">Son İşlemler</h5>
+        <a href="#" class="btn btn-sm btn-outline-primary">Tümünü Gör</a>
+      </div>
+      <div class="section-body">
+        {% if transactions %}
+        <div class="table-responsive">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th>Tarih</th>
+                <th>Açıklama</th>
+                <th>Kategori</th>
+                <th>Miktar</th>
+                <th>İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in transactions %}
+              <tr class="animate-slideIn">
+                <td data-label="Tarih">
+                  <span class="date-day">{{ t.date.strftime('%d %b') }}</span>
+                  <span class="date-time">{{ t.date.strftime('%H:%M') }}</span>
+                </td>
+                <td data-label="Açıklama">
+                  <span class="transaction-title">{{ t.title }}</span>
+                  <span class="transaction-account">{{ t.account.name }}</span>
+                </td>
+                <td data-label="Kategori">
+                  <span class="category-badge">{{ t.category }}</span>
+                </td>
+                <td data-label="Miktar" class="{{ 'amount-income' if t.type == 'income' else 'amount-expense' }}">
+                  {{ '+' if t.type == 'income' else '-' }}{% if t.account.currency == 'USD' %}${{ t.amount }}{%
+                  elif t.account.currency == 'TRY' %}{{ t.amount }} ₺{% else %}€ {{ t.amount }}{% endif %}
+                </td>
+                <td data-label="İşlem" class="transaction-actions">
+                  <form action="{{ url_for('main.delete_transaction', id=t.id) }}" method="POST"
+                    onsubmit="return confirm('İşlemi silmek istediğinize emin misiniz?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-        <form action="/add_transaction" method="POST">
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">İşlem Tipi</label>
-                <select name="type" class="form-select" id="transactionType">
-                  <option value="expense">Gider</option>
-                  <option value="income">Gelir</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Tutar</label>
-                <input type="number" step="0.01" name="amount" class="form-control" placeholder="0.00" required>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Açıklama</label>
-              <input type="text" name="title" class="form-control" placeholder="Örn: Market alışverişi" required>
-            </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Kategori</label>
-                <input type="text" name="category" class="form-control" placeholder="Örn: Market" list="categories">
-                <datalist id="categories">
-                  <option>Market</option>
-                  <option>Fatura</option>
-                  <option>Kira</option>
-                  <option>Ulaşım</option>
-                  <option>Eğlence</option>
-                  <option>Maaş</option>
-                  <option>Freelance</option>
-                </datalist>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Hesap</label>
-                <select name="account_id" class="form-select" required>
-                  {% for acc in accounts %}
-                  <option value="{{ acc.id }}">{{ acc.name }} ({{ acc.balance }} {{ acc.currency }})</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Tarih</label>
-              <input type="datetime-local" name="date" class="form-control" value="{{ now }}">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Notlar</label>
-              <textarea name="description" class="form-control" rows="2"
-                placeholder="İsteğe bağlı notlar..."></textarea>
-            </div>
+        {% else %}
+        <div class="no-data">
+          <div class="no-data-icon">
+            <i class="fas fa-receipt"></i>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
-            <button type="submit" class="btn btn-primary">Kaydet</button>
+          <p>Henüz işlem yok</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- QUICK STATS -->
+    <div class="quick-stats">
+      <div class="quick-stat-card quick-stat-positive">
+        <div class="quick-stat-header">
+          <div>
+            <div class="quick-stat-label">En Çok Harcama</div>
+            <div class="quick-stat-value">{{ top_category | default('Yok') }}</div>
           </div>
-        </form>
+          <div class="quick-stat-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-stat-card {% if net_positive %}quick-stat-positive{% else %}quick-stat-negative{% endif %}">
+        <div class="quick-stat-header">
+          <div>
+            <div class="quick-stat-label">Aylık Net</div>
+            <div class="quick-stat-value">${{ monthly_net | default(0) }}</div>
+          </div>
+          <div class="quick-stat-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  {% endblock %}
+</div>
+
+{% endblock %}
 
 
 {% block scripts %}
-
-
 <script>
-    // Dashboard'a özel JavaScript
-    document.getElementById('transactionType').addEventListener('change', function() {
+  // Dashboard'a özel JavaScript
+  document.addEventListener('DOMContentLoaded', function () {
+    const transactionType = document.getElementById('transactionType');
+    if (transactionType) {
+      transactionType.addEventListener('change', function () {
         const amountInput = document.querySelector('input[name="amount"]');
         const type = this.value;
         amountInput.placeholder = type === 'income' ? 'Gelir miktarı...' : 'Gider miktarı...';
+      });
+    }
+
+    // Flash mesajlarını otomatik kapatma
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      setTimeout(() => {
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 300);
+      }, 5000);
     });
+  });
 </script>
-    
 {% endblock %}

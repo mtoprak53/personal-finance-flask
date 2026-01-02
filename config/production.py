@@ -8,7 +8,8 @@ class ProductionConfig(Config):
     TESTING = False
     
     # Security
-    FORCE_HTTPS = True
+    # FORCE_HTTPS = True
+    FORCE_HTTPS = False  # Test edene kadar False bırakın
     ENABLE_CSP = False  # Test edene kadar False bırakın
     
     # Production security headers (opsiyonel override)

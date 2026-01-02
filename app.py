@@ -77,14 +77,14 @@ def create_app(config_name=None):
         pass
     
 
-    # HTTPS yönlendirmesi (production'da)
-    if app.config.get('FORCE_HTTPS', False):
-        @app.before_request
-        def force_https():
-            """HTTP'yi HTTPS'ye yönlendir (sadece production'da)"""
-            if request.url.startswith('http://'):
-                url = request.url.replace('http://', 'https://', 1)
-                return redirect(url, code=301)
+    # # HTTPS yönlendirmesi (production'da)
+    # if app.config.get('FORCE_HTTPS', False):
+    #     @app.before_request
+    #     def force_https():
+    #         """HTTP'yi HTTPS'ye yönlendir (sadece production'da)"""
+    #         if request.url.startswith('http://'):
+    #             url = request.url.replace('http://', 'https://', 1)
+    #             return redirect(url, code=301)
     
 
     # Health check endpoint (Railway için)

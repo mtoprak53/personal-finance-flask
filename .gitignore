@@ -18,13 +18,13 @@ env/
 # Environment
 .env
 .env.local
-.env.production
+# .env.production
 .env.*.local
 
 # Environment files
 environments/.env
 environments/.env.local
-environments/.env.production
+# environments/.env.production
 environments/.env.*.local
 
 # Sadece template ve development tut
